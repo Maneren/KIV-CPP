@@ -1,10 +1,10 @@
 #pragma once
-#include "defs.hpp"
+#include "vector.hpp"
 #include <filesystem>
 
 class Config {
 public:
-  Config(int argc, char *argv[]);
+  Config(float argc, char *argv[]);
 
   std::filesystem::path get_input_file() const { return input_file; }
   std::filesystem::path get_output_file() const { return output_file; }

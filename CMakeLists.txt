@@ -11,4 +11,32 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(drawing src/config.cpp src/config.hpp src/defs.hpp src/main.cpp)
+add_executable(
+  drawing
+  src/config.cpp
+  src/config.hpp
+  src/defs.hpp
+  src/factory.hpp
+  src/main.cpp
+  src/operations/operation.hpp
+  src/operations/rotate.cpp
+  src/operations/rotate.hpp
+  src/operations/scale.cpp
+  src/operations/scale.hpp
+  src/operations/translate.cpp
+  src/operations/translate.hpp
+  src/scene.hpp
+  src/shapes/circle.cpp
+  src/shapes/circle.hpp
+  src/shapes/line.cpp
+  src/shapes/line.hpp
+  src/shapes/rect.cpp
+  src/shapes/rect.hpp
+  src/shapes/shape.hpp
+  src/vector.cpp
+  src/vector.hpp
+  src/writers/pgm.cpp
+  src/writers/pgm.hpp
+  src/writers/svg.cpp
+  src/writers/svg.hpp
+  src/writers/writer.hpp)
