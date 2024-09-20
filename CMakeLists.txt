@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.30)
 project(
   KIV_CPP_Sem01
   VERSION 1.0
-  DESCRIPTION "Semestral exercise #1 for KIV/CPP"
+  DESCRIPTION "Semester project #1 for KIV/CPP"
   LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
