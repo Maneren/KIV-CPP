@@ -1,6 +1,5 @@
 #include "vector.hpp"
 #include <format>
-#include <string>
 
 std::string Vec2::display() { return std::format("({}, {})", x, y); }
 

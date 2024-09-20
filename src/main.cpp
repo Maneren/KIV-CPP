@@ -81,20 +81,19 @@ int main(int argc, char *argv[]) {
     }
 
     auto shape = shapeFactory.create(type, arg_vector);
-    if (shape.has_value()) {
+    if (shape) {
       std::cout << shape->get()->display() << std::endl;
       continue;
     }
 
     auto transform = operationFactory.create(type, arg_vector);
-    if (transform.has_value()) {
+    if (transform) {
       std::cout << transform->get()->display() << std::endl;
       continue;
     }
 
     std::cerr << "Unknown instruction: '" << type << "'" << std::endl;
-
-    // Handle error: unknown type
+    return 1;
   }
 
   return 0;

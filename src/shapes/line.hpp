@@ -18,12 +18,3 @@ private:
   /// End point of the line
   Point end;
 };
-
-// template <> struct std::formatter<Line> {
-//   constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin();
-//   }
-//
-//   auto format(const Index &id, std::format_context &ctx) const {
-//     return std::format_to(ctx.out(), "Line({})", id.id_);
-//   }
-// };
