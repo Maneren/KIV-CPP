@@ -10,7 +10,7 @@ public:
   void transform(IOperation &op) override;
   std::string display() override {
     return std::format("Circle({}, {})", center.display(),
-                       center.y - radiusPoint.y);
+                       (radiusPoint - center).magnitude());
   };
   ~Circle() = default;
 

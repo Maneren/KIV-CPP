@@ -12,6 +12,8 @@ struct Vec2 {
   Vec2 operator+(Vec2 v2);
   Vec2 operator-(Vec2 v2);
   Vec2 operator*(float scalar);
+
+  float magnitude();
 };
 
 using Point = Vec2;
