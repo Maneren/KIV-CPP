@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (auto transform = operationFactory.create(type, arg_vector); transform) {
-      scene.apply(**transform);
+      scene.apply_transform(**transform);
       continue;
     }
 
