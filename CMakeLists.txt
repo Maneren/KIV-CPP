@@ -15,7 +15,6 @@ add_executable(
   drawing
   src/config.cpp
   src/config.hpp
-  src/defs.hpp
   src/factory.hpp
   src/main.cpp
   src/operations/operation.hpp
