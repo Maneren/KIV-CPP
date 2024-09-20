@@ -16,5 +16,9 @@ complex: build
   ./build/drawing inputs/complex.in inputs/complex.svg 160x160
   ./build/drawing inputs/complex.in inputs/complex.pgm 160x160
 
+valgrind_complex: build
+  valgrind --leak-check=full ./build/drawing inputs/complex.in inputs/complex.svg 160x160
+  valgrind --leak-check=full ./build/drawing inputs/complex.in inputs/complex.pgm 160x160
+
 clean:
   rm -rf build
