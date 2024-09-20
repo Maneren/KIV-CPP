@@ -3,14 +3,14 @@
 
 class Scale : public IOperation {
 public:
-  Scale(Point center, float angle) : center(center), angle(angle) {}
+  Scale(Point center, float angle) : center(center), magnitude(angle) {}
   Point transform(Point point) override;
   std::string display() override {
-    return std::format("Scale({}, {})", center, angle);
+    return std::format("Scale({}, {})", center, magnitude);
   }
   ~Scale() = default;
 
 private:
   const Point center;
-  const float angle;
+  const float magnitude;
 };
