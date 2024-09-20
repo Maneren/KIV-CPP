@@ -7,12 +7,14 @@ struct Vec2 {
   Vec2(float x, float y) : x(x), y(y) {}
   float x;
   float y;
+  /// Display the vector
   std::string display();
 
   Vec2 operator+(Vec2 v2);
   Vec2 operator-(Vec2 v2);
   Vec2 operator*(float scalar);
 
+  /// Get the magnitude of the vector
   float magnitude();
 };
 
