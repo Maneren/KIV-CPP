@@ -21,5 +21,5 @@ Config::Config(int argc, char *argv[]) {
   auto w = dims.substr(0, dims_split);
   auto h = dims.substr(dims_split + 1);
 
-  dimensions = Dimensions(std::stoi(w), std::stoi(h));
+  dimensions = Dimensions(std::stof(w), std::stof(h));
 }

@@ -13,7 +13,7 @@ public:
   };
   void draw_svg(std::ostream &out) override;
   void draw_raster(std::vector<std::vector<bool>> &matrix) override;
-  ~Rect() = default;
+  ~Rect() override = default;
 
 private:
   /// Top-left point of the rect

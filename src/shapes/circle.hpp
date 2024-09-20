@@ -13,8 +13,8 @@ public:
   };
   void draw_svg(std::ostream &out) override;
   void draw_raster(std::vector<std::vector<bool>> &matrix) override;
-  float radius() { return (radiusPoint - center).magnitude(); }
-  ~Circle() = default;
+  float radius() const { return (radiusPoint - center).magnitude(); }
+  ~Circle() override = default;
 
 private:
   /// The center of the circle

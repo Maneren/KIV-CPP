@@ -12,24 +12,41 @@ void Line::draw_svg(std::ostream &out) {
 }
 
 void Line::draw_raster(std::vector<std::vector<bool>> &matrix) {
-  float x = start.x, y = start.y;
+  auto x = static_cast<int>(start.x);
+  auto y = static_cast<int>(start.y);
 
-  int dx = std::abs(end.x - start.x), sx = start.x < end.x ? 1 : -1;
-  int dy = -std::abs(end.y - start.y), sy = start.y < end.y ? 1 : -1;
-  int err = dx + dy, e2; /* error value e_xy */
+  auto end_x = static_cast<int>(end.x);
+  auto end_y = static_cast<int>(end.y);
 
-  for (;;) { /* loop */
-    matrix[y][x] = true;
-    if (x == end.x && y == end.y)
+  int delta_x = std::abs(end_x - x);
+  int step_x = start.x < end.x ? 1 : -1;
+
+  int delta_y = -std::abs(end_y - y);
+  int step_y = start.y < end.y ? 1 : -1;
+
+  int error = delta_x + delta_y;
+  int error_xy;
+
+  while (true) {
+    // Ensure the coordinates are within the bounds of the matrix
+    if (x >= 0 && x < matrix[0].size() && y >= 0 && y < matrix.size()) {
+      matrix[y][x] = true;
+    }
+
+    if (x == end_x && y == end_y) {
       break;
-    e2 = 2 * err;
-    if (e2 >= dy) {
-      err += dy;
-      x += sx;
-    } /* e_xy+e_x > 0 */
-    if (e2 <= dx) {
-      err += dx;
-      y += sy;
-    } /* e_xy+e_y < 0 */
+    }
+
+    error_xy = 2 * error;
+
+    if (error_xy >= delta_y) {
+      error += delta_y;
+      x += step_x;
+    }
+
+    if (error_xy <= delta_x) {
+      error += delta_x;
+      y += step_y;
+    }
   }
 }

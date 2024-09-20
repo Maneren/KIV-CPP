@@ -11,24 +11,53 @@ void Circle::draw_svg(std::ostream &out) {
       << "\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n";
 }
 
+bool isWithinBounds(const std::vector<std::vector<bool>> &matrix, int x,
+                    int y) {
+  return x >= 0 && x < matrix[0].size() && y >= 0 && y < matrix.size();
+}
+
 void Circle::draw_raster(std::vector<std::vector<bool>> &matrix) {
-  auto r = radius();
-  int x = -r, y = 0, err = 2 - 2 * r; /* II. Quadrant */
+  auto radiusInt = static_cast<int>(radius());
+  int x = -radiusInt;
+  int y = 0;
+  int error = 2 - 2 * radiusInt;
+
+  auto centerX = static_cast<int>(center.x);
+  auto centerY = static_cast<int>(center.y);
+
   do {
-    matrix[center.y + y][center.x - x] = true;
-    matrix[center.y - x][center.x - y] = true;
-    matrix[center.y - y][center.x + x] = true;
-    matrix[center.y + x][center.x + y] = true;
-
-    r = err;
-
-    if (r <= y) {
-      err += ++y * 2 + 1; /* e_xy+e_y < 0 */
+    int x1 = centerX - x;
+    int y1 = centerY + y;
+    if (isWithinBounds(matrix, x1, y1)) {
+      matrix[y1][x1] = true;
     }
 
-    if (r > x || err > y) {
-      err += ++x * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
+    int x2 = centerX - y;
+    int y2 = centerY - x;
+    if (isWithinBounds(matrix, x2, y2)) {
+      matrix[y2][x2] = true;
     }
 
+    int x3 = centerX + x;
+    int y3 = centerY - y;
+    if (isWithinBounds(matrix, x3, y3)) {
+      matrix[y3][x3] = true;
+    }
+
+    int x4 = centerX + y;
+    int y4 = centerY + x;
+    if (isWithinBounds(matrix, x4, y4)) {
+      matrix[y4][x4] = true;
+    }
+
+    int errorY = error;
+
+    if (errorY <= y) {
+      error += ++y * 2 + 1;
+    }
+
+    if (errorY > x || error > y) {
+      error += ++x * 2 + 1;
+    }
   } while (x < 0);
 }

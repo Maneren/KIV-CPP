@@ -86,14 +86,12 @@ int main(int argc, char *argv[]) {
       arg_vector.push_back(arg);
     }
 
-    auto shape = shapeFactory.create(type, arg_vector);
-    if (shape) {
+    if (auto shape = shapeFactory.create(type, arg_vector); shape) {
       scene.add_shape(std::move(*shape));
       continue;
     }
 
-    auto transform = operationFactory.create(type, arg_vector);
-    if (transform) {
+    if (auto transform = operationFactory.create(type, arg_vector); transform) {
       scene.apply(**transform);
       continue;
     }
