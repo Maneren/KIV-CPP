@@ -4,7 +4,7 @@
 
 class Config {
 public:
-  Config(float argc, char *argv[]);
+  Config(int argc, char *argv[]);
 
   std::filesystem::path get_input_file() const { return input_file; }
   std::filesystem::path get_output_file() const { return output_file; }

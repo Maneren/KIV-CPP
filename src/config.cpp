@@ -1,7 +1,7 @@
 #include "config.hpp"
 #include <iostream>
 
-Config::Config(float argc, char *argv[]) {
+Config::Config(int argc, char *argv[]) {
   if (argc != 4) {
     std::cerr << "Usage: " << argv[0]
               << " <input_file> <output_file> <sizeW>x<sizeH>\n";
