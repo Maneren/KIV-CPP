@@ -85,18 +85,14 @@ int main(int argc, char *argv[]) {
       arg_vector.push_back(arg);
     }
 
-    std::cout << scene.display() << std::endl;
-
     auto shape = shapeFactory.create(type, arg_vector);
     if (shape) {
-      std::cout << shape->get()->display() << std::endl;
       scene.add_shape(std::move(*shape));
       continue;
     }
 
     auto transform = operationFactory.create(type, arg_vector);
     if (transform) {
-      std::cout << transform->get()->display() << std::endl;
       scene.apply(**transform);
       continue;
     }
@@ -104,8 +100,6 @@ int main(int argc, char *argv[]) {
     std::cerr << "Unknown instruction: '" << type << "'" << std::endl;
     return 1;
   }
-
-  std::cout << scene.display() << std::endl;
 
   std::ofstream output_file(config.get_output_file());
   if (!output_file) {

@@ -7,7 +7,6 @@ void SVGWriter::write(Scene &scene) {
       << dimensions.x << "\" height=\"" << dimensions.y << "\">\n";
 
   for (auto &shape : scene.get_shapes()) {
-    std::cout << shape->display();
     shape->draw_svg(out);
   }
 

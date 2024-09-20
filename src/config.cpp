@@ -22,7 +22,4 @@ Config::Config(int argc, char *argv[]) {
   auto h = dims.substr(dims_split + 1);
 
   dimensions = Dimensions(std::stoi(w), std::stoi(h));
-
-  std::cout << "Config: " << input_file << " " << output_file << " "
-            << dimensions.x << "x" << dimensions.y << std::endl;
 }
