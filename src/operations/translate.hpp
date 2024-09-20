@@ -9,5 +9,5 @@ public:
   ~Translate() = default;
 
 private:
-  Vec2 delta;
+  const Vec2 delta;
 };

@@ -11,6 +11,6 @@ public:
   ~Rotate() = default;
 
 private:
-  Point center;
-  float angle;
+  const Point center;
+  const float angle;
 };
