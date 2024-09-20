@@ -8,6 +8,7 @@ public:
   std::string display() override {
     return std::format("Rotate({}, {})", center, angle);
   }
+  ~Rotate() = default;
 
 private:
   Point center;

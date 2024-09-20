@@ -12,6 +12,7 @@ public:
     return std::format("Circle({}, {})", center.display(),
                        center.y - radiusPoint.y);
   };
+  ~Circle() = default;
 
 private:
   /// The center of the circle

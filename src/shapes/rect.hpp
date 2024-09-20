@@ -13,6 +13,7 @@ public:
   std::string display() override {
     return std::format("Rect({}, {})", start, end);
   };
+  ~Rect() = default;
 
 private:
   /// Top-left point of the rect

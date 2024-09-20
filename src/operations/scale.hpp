@@ -8,6 +8,7 @@ public:
   std::string display() override {
     return std::format("Scale({}, {})", center, angle);
   }
+  ~Scale() = default;
 
 private:
   Point center;

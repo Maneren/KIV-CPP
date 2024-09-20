@@ -10,6 +10,7 @@ public:
   std::string display() override {
     return std::format("Line({} -> {})", start.display(), end.display());
   };
+  ~Line() = default;
 
 private:
   /// Start point of the line
