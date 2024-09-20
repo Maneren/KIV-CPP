@@ -9,8 +9,8 @@ build:
   cmake --build build
 
 sample: build
-  ./build/drawing inputs/sample.in inputs/sample.svg 100x50
-  ./build/drawing inputs/sample.in inputs/sample.pgm 100x50
+  ./build/drawing inputs/sample.in inputs/sample.svg 60x60
+  ./build/drawing inputs/sample.in inputs/sample.pgm 60x60
 
 complex: build
   ./build/drawing inputs/complex.in inputs/complex.svg 160x160
