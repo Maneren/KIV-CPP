@@ -4,6 +4,7 @@
 #include "operations/rotate.hpp"
 #include "operations/scale.hpp"
 #include "operations/translate.hpp"
+#include "scene.hpp"
 #include "shapes/circle.hpp"
 #include "shapes/line.hpp"
 #include "shapes/rect.hpp"
@@ -68,6 +69,8 @@ int main(int argc, char *argv[]) {
                                   Point(args[0], args[1]), args[2])};
   });
 
+  Scene scene{config.get_dimensions()};
+
   std::string line;
   while (std::getline(input_file, line)) {
     auto type = line.substr(0, line.find(' '));
@@ -80,21 +83,27 @@ int main(int argc, char *argv[]) {
       arg_vector.push_back(arg);
     }
 
+    std::cout << scene.display() << std::endl;
+
     auto shape = shapeFactory.create(type, arg_vector);
     if (shape) {
       std::cout << shape->get()->display() << std::endl;
+      scene.add_shape(std::move(*shape));
       continue;
     }
 
     auto transform = operationFactory.create(type, arg_vector);
     if (transform) {
       std::cout << transform->get()->display() << std::endl;
+      scene.apply(**transform);
       continue;
     }
 
     std::cerr << "Unknown instruction: '" << type << "'" << std::endl;
     return 1;
   }
+
+  std::cout << scene.display() << std::endl;
 
   return 0;
 }

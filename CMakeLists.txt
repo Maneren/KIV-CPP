@@ -25,6 +25,7 @@ add_executable(
   src/operations/scale.hpp
   src/operations/translate.cpp
   src/operations/translate.hpp
+  src/scene.cpp
   src/scene.hpp
   src/shapes/circle.cpp
   src/shapes/circle.hpp
