@@ -10,6 +10,7 @@
 #include "shapes/rect.hpp"
 #include "shapes/shape.hpp"
 #include "vector.hpp"
+#include "writers/pgm.hpp"
 #include "writers/svg.hpp"
 #include "writers/writer.hpp"
 #include <fstream>
@@ -114,6 +115,12 @@ int main(int argc, char *argv[]) {
       ".svg",
       [](std::ostream &output) -> std::optional<std::unique_ptr<IWriter>> {
         return std::optional{std::make_unique<SVGWriter>(output)};
+      });
+
+  writerFactory.register_type(
+      ".pgm",
+      [](std::ostream &output) -> std::optional<std::unique_ptr<IWriter>> {
+        return std::optional{std::make_unique<PGMWriter>(output)};
       });
 
   auto extension = config.get_output_file().extension();

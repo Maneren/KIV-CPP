@@ -12,6 +12,7 @@ public:
     return std::format("rect {}, {}", start, end - start);
   };
   void draw_svg(std::ostream &out) override;
+  void draw_raster(std::vector<std::vector<bool>> &matrix) override;
   ~Rect() = default;
 
 private:

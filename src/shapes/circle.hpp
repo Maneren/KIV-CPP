@@ -9,10 +9,11 @@ public:
       : center(center), radiusPoint({center.x, center.y + radius}){};
   void transform(IOperation &op) override;
   std::string display() override {
-    return std::format("circle {}, {}", center.display(),
-                       (radiusPoint - center).magnitude());
+    return std::format("circle {}, {}", center.display(), radius());
   };
   void draw_svg(std::ostream &out) override;
+  void draw_raster(std::vector<std::vector<bool>> &matrix) override;
+  float radius() { return (radiusPoint - center).magnitude(); }
   ~Circle() = default;
 
 private:
