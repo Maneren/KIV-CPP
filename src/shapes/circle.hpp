@@ -9,9 +9,10 @@ public:
       : center(center), radiusPoint({center.x, center.y + radius}){};
   void transform(IOperation &op) override;
   std::string display() override {
-    return std::format("Circle({}, {})", center.display(),
+    return std::format("circle {}, {}", center.display(),
                        (radiusPoint - center).magnitude());
   };
+  void draw_svg(std::ostream &out) override;
   ~Circle() = default;
 
 private:

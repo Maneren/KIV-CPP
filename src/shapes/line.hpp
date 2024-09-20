@@ -8,8 +8,9 @@ public:
   Line(Point start, Point end) : start(start), end(end) {}
   void transform(IOperation &op) override;
   std::string display() override {
-    return std::format("Line({} -> {})", start.display(), end.display());
+    return std::format("line {} -> {}", start.display(), end.display());
   };
+  void draw_svg(std::ostream &out) override;
   ~Line() = default;
 
 private:

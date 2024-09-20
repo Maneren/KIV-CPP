@@ -5,14 +5,13 @@
 
 class Rect : public IShape {
 public:
-  Rect(Point start, Dimensions dimensions) : start(start) {
-    end.x = start.x + dimensions.x;
-    end.y = start.y + dimensions.y;
-  }
+  Rect(Point start, Dimensions dimensions)
+      : start(start), end(start + dimensions){};
   void transform(IOperation &op) override;
   std::string display() override {
-    return std::format("Rect({}, {})", start, end);
+    return std::format("rect {}, {}", start, end - start);
   };
+  void draw_svg(std::ostream &out) override;
   ~Rect() = default;
 
 private:

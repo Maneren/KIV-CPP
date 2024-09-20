@@ -13,6 +13,10 @@ public:
   void apply(IOperation &op);
   /// Display all shapes in the scene
   std::string display();
+  /// Get the dimensions of the scene
+  Dimensions get_dimensions() const { return dimensions; }
+  /// Get the shapes in the scene
+  std::vector<std::unique_ptr<IShape>> &get_shapes() { return shapes; }
   ~Scene() {}
 
 private:

@@ -10,6 +10,8 @@
 #include "shapes/rect.hpp"
 #include "shapes/shape.hpp"
 #include "vector.hpp"
+#include "writers/svg.hpp"
+#include "writers/writer.hpp"
 #include <fstream>
 #include <iostream>
 #include <optional>
@@ -27,7 +29,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  Factory<IShape> shapeFactory;
+  Factory<IShape, std::vector<float>> shapeFactory;
 
   shapeFactory.register_type("line", [](auto args) {
     return args.size() != 4
@@ -49,7 +51,7 @@ int main(int argc, char *argv[]) {
                                   Point(args[0], args[1]), args[2])};
   });
 
-  Factory<IOperation> operationFactory;
+  Factory<IOperation, std::vector<float>> operationFactory;
 
   operationFactory.register_type("translate", [](auto args) {
     return args.size() != 2 ? std::nullopt
@@ -104,6 +106,32 @@ int main(int argc, char *argv[]) {
   }
 
   std::cout << scene.display() << std::endl;
+
+  std::ofstream output_file(config.get_output_file());
+  if (!output_file) {
+    std::cerr << "Could not open output file: " << config.get_output_file()
+              << std::endl;
+    return 1;
+  }
+
+  Factory<IWriter, std::ostream &> writerFactory;
+
+  writerFactory.register_type(
+      ".svg",
+      [](std::ostream &output) -> std::optional<std::unique_ptr<IWriter>> {
+        return std::optional{std::make_unique<SVGWriter>(output)};
+      });
+
+  auto extension = config.get_output_file().extension();
+
+  auto writer = writerFactory.create(extension.string(), output_file);
+  if (!writer) {
+    std::cerr << "Unknown output file extension: " << extension.string()
+              << std::endl;
+    return 1;
+  }
+
+  writer->get()->write(scene);
 
   return 0;
 }

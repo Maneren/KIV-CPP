@@ -1,9 +1,13 @@
 #pragma once
-
-#include "../vector.hpp"
+#include "../scene.hpp"
+#include <iostream>
 
 class IWriter {
 public:
-  virtual void write(Scene &scene, Dimensions dims);
-  virtual ~IWriter() {}
+  IWriter(std::ostream &out) : out(out) {}
+  virtual void write(Scene &scene) = 0;
+  virtual ~IWriter() = default;
+
+protected:
+  std::ostream &out;
 };
