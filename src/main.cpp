@@ -112,16 +112,10 @@ int main(int argc, char *argv[]) {
   Factory<IWriter, std::ostream &> writerFactory;
 
   writerFactory.register_type(
-      ".svg",
-      [](std::ostream &output) -> std::optional<std::unique_ptr<IWriter>> {
-        return std::optional{std::make_unique<SVGWriter>(output)};
-      });
+      ".svg", [](auto &output) { return std::make_unique<SVGWriter>(output); });
 
   writerFactory.register_type(
-      ".pgm",
-      [](std::ostream &output) -> std::optional<std::unique_ptr<IWriter>> {
-        return std::optional{std::make_unique<PGMWriter>(output)};
-      });
+      ".pgm", [](auto &output) { return std::make_unique<PGMWriter>(output); });
 
   auto extension = config.get_output_file().extension();
 
