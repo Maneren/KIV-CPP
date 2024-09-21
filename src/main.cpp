@@ -16,11 +16,18 @@
 #include <fstream>
 #include <iostream>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 int main(int argc, char *argv[]) {
-  Config config(argc, argv);
+  Config config;
+  try {
+    config = Config(argc, argv);
+  } catch (std::invalid_argument &e) {
+    std::cerr << e.what() << std::endl;
+    return 1;
+  }
 
   // Read input file
   std::ifstream input_file(config.get_input_file());

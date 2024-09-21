@@ -4,6 +4,7 @@
 
 class Config {
 public:
+  Config() = default;
   Config(int argc, char *argv[]);
 
   std::filesystem::path get_input_file() const { return input_file; }
@@ -14,4 +15,7 @@ private:
   std::filesystem::path input_file;
   std::filesystem::path output_file;
   Dimensions dimensions;
+
+  void validateArguments(int argc, char *argv[]);
+  void parseDimensions(const std::string &dims);
 };
