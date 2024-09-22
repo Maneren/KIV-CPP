@@ -81,6 +81,8 @@ int main(int argc, char *argv[]) {
 
   Scene scene{config.get_dimensions()};
 
+  int commands = 0;
+
   std::string line;
   while (std::getline(input_file, line)) {
     if (line.find('#') != std::string::npos) {
@@ -102,11 +104,13 @@ int main(int argc, char *argv[]) {
 
     if (auto shape = shapeFactory.create(type, arg_vector); shape) {
       scene.add_shape(std::move(*shape));
+      commands++;
       continue;
     }
 
     if (auto transform = operationFactory.create(type, arg_vector); transform) {
       scene.apply_transform(**transform);
+      commands++;
       continue;
     }
 
@@ -139,6 +143,8 @@ int main(int argc, char *argv[]) {
   }
 
   writer->get()->write(scene);
+
+  std::cout << "OK\n" << commands << std::endl;
 
   return 0;
 }
