@@ -83,6 +83,13 @@ int main(int argc, char *argv[]) {
 
   std::string line;
   while (std::getline(input_file, line)) {
+    if (line.find('#') != std::string::npos) {
+      line = line.substr(0, line.find('#'));
+      if (line.empty()) {
+        continue;
+      }
+    }
+
     auto type = line.substr(0, line.find(' '));
     auto args_str = line.substr(line.find(' ') + 1);
 

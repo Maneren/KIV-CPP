@@ -4,12 +4,13 @@ circle 100 50 15
 rotate 75 50 45
 translate 20 20
 rect 10 10 40 30
+# comment
 scale 0 0 2
 line 20 20 100 80
 scale 0 0 0.25
 line 5 20 25 5
 rotate 80 80 180
-circle 40 40 30
+circle 40 40 30 # end comment
 rotate 80 80 90
 circle 40 40 30
 rotate 80 80 -180
