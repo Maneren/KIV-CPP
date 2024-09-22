@@ -7,8 +7,6 @@ void PGMWriter::write(Scene &scene) {
   out << dimensions.x << " " << dimensions.y << "\n";
   out << "255\n";
 
-  std::cout << "Writing PGM file\n";
-
   auto matrix = std::vector<std::vector<bool>>(
       dimensions.y, std::vector<bool>(dimensions.x, false));
 
