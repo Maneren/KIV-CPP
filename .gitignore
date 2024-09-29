@@ -31,8 +31,14 @@
 *.out
 *.app
 
-/build
-/out
-/.cache
-*.svg
-*.pgm
+build
+out
+.cache
+
+
+compile_commands.json
+*.zip
+*.out
+
+*.txt
+!CMakeLists.txt

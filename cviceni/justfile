@@ -1,0 +1,16 @@
+builddir := justfile_directory() / "build"
+srcdir := justfile_directory()
+
+[private]
+default:
+    @just --list
+
+build folder:
+  mkdir -p ./build
+  clang++ -Wall -std=c++20 -Wall -Wextra "{{justfile_directory() / folder}}/main.cpp" -o "{{builddir}}/main_{{folder}}"
+
+run folder args="": (build folder)
+  "{{builddir}}/main_{{folder}}" {{args}}
+
+valgrind folder args="": (build folder)
+  valgrind "{{builddir}}/main_{{folder}}" {{args}}
