@@ -18,14 +18,13 @@ void Line::draw_raster(std::vector<std::vector<bool>> &matrix) {
   auto end_x = static_cast<int>(end.x);
   auto end_y = static_cast<int>(end.y);
 
-  int delta_x = std::abs(end_x - x);
-  int step_x = start.x < end.x ? 1 : -1;
+  int dx = std::abs(end_x - x);
+  int dy = -std::abs(end_y - y);
 
-  int delta_y = -std::abs(end_y - y);
+  int step_x = start.x < end.x ? 1 : -1;
   int step_y = start.y < end.y ? 1 : -1;
 
-  int error = delta_x + delta_y;
-  int error_xy;
+  int error = dx + dy;
 
   while (true) {
     // Ensure the coordinates are within the bounds of the matrix
@@ -37,15 +36,15 @@ void Line::draw_raster(std::vector<std::vector<bool>> &matrix) {
       break;
     }
 
-    error_xy = 2 * error;
+    int error_xy = 2 * error;
 
-    if (error_xy >= delta_y) {
-      error += delta_y;
+    if (error_xy >= dy) {
+      error += dy;
       x += step_x;
     }
 
-    if (error_xy <= delta_x) {
-      error += delta_x;
+    if (error_xy <= dx) {
+      error += dx;
       y += step_y;
     }
   }
