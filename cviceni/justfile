@@ -1,4 +1,4 @@
-builddir := justfile_directory() / "build"
+builddir := justfile_directory() / "out"
 srcdir := justfile_directory()
 
 [private]

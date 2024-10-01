@@ -1,24 +1,27 @@
+builddir := justfile_directory() / "out" / "Debug"
+
 [private]
 default:
     @just --list
 
 configure:
-  cmake -S . -B build
+  mkdir -p {{builddir}}
+  cmake -S . -B {{builddir}}
 
 build:
-  cmake --build build
+  cmake --build {{builddir}}
 
 sample: build
-  ./build/drawing inputs/sample.in inputs/sample.svg 60x60
-  ./build/drawing inputs/sample.in inputs/sample.pgm 60x60
+  {{builddir}}/drawing inputs/sample.in inputs/sample.svg 60x60
+  {{builddir}}/drawing inputs/sample.in inputs/sample.pgm 60x60
 
 complex: build
-  ./build/drawing inputs/complex.in inputs/complex.svg 160x160
-  ./build/drawing inputs/complex.in inputs/complex.pgm 160x160
+  {{builddir}}/drawing inputs/complex.in inputs/complex.svg 160x160
+  {{builddir}}/drawing inputs/complex.in inputs/complex.pgm 160x160
 
 valgrind_complex: build
-  valgrind --leak-check=full ./build/drawing inputs/complex.in inputs/complex.svg 160x160
-  valgrind --leak-check=full ./build/drawing inputs/complex.in inputs/complex.pgm 160x160
+  valgrind --leak-check=full {{builddir}}/drawing inputs/complex.in inputs/complex.svg 160x160
+  valgrind --leak-check=full {{builddir}}/drawing inputs/complex.in inputs/complex.pgm 160x160
 
 clean:
-  rm -rf build
+  rm -rf out
