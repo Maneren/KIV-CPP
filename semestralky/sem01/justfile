@@ -1,5 +1,7 @@
 builddir := justfile_directory() / "out" / "Debug"
 
+export CMAKE_EXPORT_COMPILE_COMMANDS := "1"
+
 [private]
 default:
     @just --list
