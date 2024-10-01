@@ -5,20 +5,24 @@
 struct Vec2 {
   Vec2() : x(0), y(0) {}
   Vec2(float x, float y) : x(x), y(y) {}
+
   float x;
   float y;
-  /// Display the vector
-  std::string display();
 
-  friend Vec2 operator+(Vec2 v1, Vec2 v2) {
+  /// Display the vector
+  std::string display() const;
+
+  friend Vec2 operator+(const Vec2 &v1, const Vec2 &v2) {
     return Vec2(v1.x + v2.x, v1.y + v2.y);
-  };
-  friend Vec2 operator-(Vec2 v1, Vec2 v2) {
+  }
+
+  friend Vec2 operator-(const Vec2 &v1, const Vec2 &v2) {
     return Vec2(v1.x - v2.x, v1.y - v2.y);
-  };
-  friend Vec2 operator*(Vec2 v, float scalar) {
+  }
+
+  friend Vec2 operator*(const Vec2 &v, float scalar) {
     return Vec2(v.x * scalar, v.y * scalar);
-  };
+  }
 
   /// Get the magnitude of the vector
   float magnitude() const;

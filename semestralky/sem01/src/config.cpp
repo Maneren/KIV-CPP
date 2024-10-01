@@ -1,6 +1,6 @@
 #include "config.hpp"
 
-Config::Config(int argc, char *argv[]) {
+Config::Config(const int argc, const char *const argv[]) {
   if (argc != 4) {
     throw std::invalid_argument(
         std::format("Usage: {} <input_file> <output_file> <sizeW>x<sizeH>",

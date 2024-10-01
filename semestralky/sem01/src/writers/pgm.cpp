@@ -1,7 +1,7 @@
 #include "pgm.hpp"
 #include <vector>
 
-void PGMWriter::write(Scene &scene) {
+void PGMWriter::write(const Scene &scene) {
   auto dimensions = scene.get_dimensions();
   out << "P2\n";
   out << dimensions.x << " " << dimensions.y << "\n";

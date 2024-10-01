@@ -5,7 +5,7 @@ void Scene::add_shape(std::unique_ptr<IShape> shape) {
   shapes.push_back(std::move(shape));
 }
 
-void Scene::apply_transform(IOperation &op) const {
+void Scene::apply_transform(const IOperation &op) const {
   for (auto const &shape : shapes) {
     shape->transform(op);
   }

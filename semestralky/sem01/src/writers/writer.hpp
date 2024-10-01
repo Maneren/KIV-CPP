@@ -5,7 +5,7 @@
 class IWriter {
 public:
   IWriter(std::ostream &out) : out(out) {}
-  virtual void write(Scene &scene) = 0;
+  virtual void write(const Scene &scene) = 0;
   virtual ~IWriter() = default;
 
 protected:

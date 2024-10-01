@@ -1,3 +1,3 @@
 #include "translate.hpp"
 
-Point Translate::transform(const Point point) const { return point + delta; }
+Point Translate::operator()(const Point point) const { return point + delta; }

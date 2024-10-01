@@ -10,7 +10,7 @@ public:
   Rotate(const Point center, const float angle)
       : center(center), angle(angle * std::numbers::pi_v<float> / 180) {}
 
-  Point transform(const Point point) const override;
+  Point operator()(const Point point) const override;
 
   std::string display() const override {
     return std::format("Rotate({}, {})", center, angle);

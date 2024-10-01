@@ -1,11 +1,11 @@
 #include "circle.hpp"
 
-void Circle::transform(IOperation &op) {
-  center = op.transform(center);
-  radiusPoint = op.transform(radiusPoint);
+void Circle::transform(const IOperation &transform) {
+  center = transform(center);
+  radiusPoint = transform(radiusPoint);
 }
 
-void Circle::draw_svg(std::ostream &out) {
+void Circle::draw_svg(std::ostream &out) const {
   out << "<circle cx=\"" << center.x << "\" cy=\"" << center.y << "\" r=\""
       << (radiusPoint - center).magnitude()
       << "\" fill=\"none\" stroke=\"black\" stroke-width=\"2\"/>\n";
@@ -16,7 +16,7 @@ bool isWithinBounds(const std::vector<std::vector<bool>> &matrix, int x,
   return x >= 0 && x < matrix[0].size() && y >= 0 && y < matrix.size();
 }
 
-void Circle::draw_raster(std::vector<std::vector<bool>> &matrix) {
+void Circle::draw_raster(std::vector<std::vector<bool>> &matrix) const {
   auto radiusInt = static_cast<int>(radius());
   int x = -radiusInt;
   int y = 0;

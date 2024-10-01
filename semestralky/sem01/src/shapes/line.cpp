@@ -1,17 +1,17 @@
 #include "line.hpp"
 
-void Line::transform(IOperation &op) {
-  start = op.transform(start);
-  end = op.transform(end);
+void Line::transform(const IOperation &op) {
+  start = op(start);
+  end = op(end);
 }
 
-void Line::draw_svg(std::ostream &out) {
+void Line::draw_svg(std::ostream &out) const {
   out << "<line x1=\"" << start.x << "\" y1=\"" << start.y << "\" x2=\""
       << end.x << "\" y2=\"" << end.y
       << "\" stroke=\"black\" stroke-width=\"2\"/>\n";
 }
 
-void Line::draw_raster(std::vector<std::vector<bool>> &matrix) {
+void Line::draw_raster(std::vector<std::vector<bool>> &matrix) const {
   auto x = static_cast<int>(start.x);
   auto y = static_cast<int>(start.y);
 

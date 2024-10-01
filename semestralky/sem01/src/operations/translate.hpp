@@ -7,7 +7,7 @@
 class Translate : public IOperation {
 public:
   Translate(const Vec2 delta) : delta(delta) {}
-  Point transform(const Point point) const override;
+  Point operator()(const Point point) const override;
   std::string display() const override {
     return std::format("Translate({})", delta);
   }

@@ -1,7 +1,7 @@
 #include "rotate.hpp"
 #include <math.h>
 
-Point Rotate::transform(const Point point) const {
+Point Rotate::operator()(const Point point) const {
   auto x = cos(angle) * (point.x - center.x) -
            sin(angle) * (point.y - center.y) + center.x;
   auto y = sin(angle) * (point.x - center.x) +
