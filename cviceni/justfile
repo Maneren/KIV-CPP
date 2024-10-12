@@ -6,11 +6,12 @@ default:
     @just --list
 
 build folder:
-  mkdir -p ./build
-  clang++ -Wall -std=c++20 -Wall -Wextra "{{justfile_directory() / folder}}/main.cpp" -o "{{builddir}}/main_{{folder}}"
+  mkdir -p {{builddir}}
+  clang++ -Wall -std=c++23 -Wall -Wextra "{{justfile_directory() / folder}}"/*.cpp -o "{{builddir}}/main_{{folder}}"
 
+[no-cd]
 run folder args="": (build folder)
   "{{builddir}}/main_{{folder}}" {{args}}
-
+[no-cd]
 valgrind folder args="": (build folder)
   valgrind "{{builddir}}/main_{{folder}}" {{args}}
