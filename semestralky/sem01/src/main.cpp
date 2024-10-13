@@ -114,7 +114,9 @@ int main(int argc, char *argv[]) {
       continue;
     }
 
-    std::cerr << "Unknown instruction: '" << type << "'" << std::endl;
+    std::cerr << "Unknown or malformed instruction: '" << line << "'"
+              << std::endl;
+    
     return 1;
   }
 
