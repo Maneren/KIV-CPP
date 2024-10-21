@@ -1,6 +1,6 @@
 # KIV/CPP
 
-This is a repository for the KIV/CPP course.
+This is a repository for the KIV/CPP course - Programming in C++.
 
 ## Cviceni
 
@@ -15,5 +15,5 @@ handled by the `just` command runner:
 
 Contains two semester projects:
 
-- [KIV/CPP Sem01](semestralky/sem01/README.md) - Drawing shapes
-- [KIV/CPP Sem02](semestralky/sem02/README.md) - Multiple precision arithmetic
+- [KIV/CPP Sem01](semestralky/sem01/README.md) - Drawing shapes from text commands
+- [KIV/CPP Sem02](semestralky/sem02/README.md) - Multiple precision arithmetic library
