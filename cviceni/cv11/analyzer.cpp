@@ -29,8 +29,8 @@ bool Dist2DAnalyzer::Load() {
 
 bool Dist2DAnalyzer::Analyze() {
   for (auto const pair : mData | views::as_const | views::chunk(2)) {
-    size_t x = static_cast<size_t>((pair[0] - NumStart) / IntervalSizeX);
-    size_t y = static_cast<size_t>((pair[1] - NumStart) / IntervalSizeY);
+    auto x = static_cast<size_t>((pair[0] - NumStart) / IntervalSizeX);
+    auto y = static_cast<size_t>((pair[1] - NumStart) / IntervalSizeY);
 
     if (x >= ImgWidth || y >= ImgHeight)
       continue;
@@ -58,7 +58,7 @@ bool Dist2DAnalyzer::Save_Image(const std::string &out) {
     double factor =
         1.0 - (static_cast<double>(value) / static_cast<double>(mMaximum));
 
-    uint8_t grayscale = static_cast<uint8_t>(255.0 * factor);
+    auto grayscale = static_cast<uint8_t>(255.0 * factor);
 
     IDrawing::Color c{grayscale, grayscale, grayscale};
 

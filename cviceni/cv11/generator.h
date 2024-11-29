@@ -25,5 +25,5 @@ public:
     mMax = maxval;
   }
 
-  void Generate();
+  void Generate() const;
 };

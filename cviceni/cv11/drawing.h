@@ -1,8 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -11,16 +9,13 @@ public:
   struct Color {
     Color() : r(0), g(0), b(0) {};
     Color(uint8_t _r, uint8_t _g, uint8_t _b) : r(_r), g(_g), b(_b) {};
-    Color(const Color &c) : r(c.r), g(c.g), b(c.b) {};
-    Color &operator=(const Color &c) {
-      r = c.r;
-      g = c.g;
-      b = c.b;
-      return *this;
-    }
+    Color(const Color &c) = default;
+    Color &operator=(const Color &c) = default;
 
     uint8_t r, g, b;
   };
+
+  virtual ~IDrawing() = default;
 
   virtual void Init(int width, int height,
                     const std::string &filename = "image") = 0;
@@ -35,8 +30,8 @@ private:
   int mWidth, mHeight;
 
 public:
-  virtual void Init(int width, int height,
-                    const std::string &filename = "image") override;
-  virtual void Draw_Pixel(int x, int y, Color clr) override;
-  virtual void Save() override;
+  void Init(int width, int height,
+            const std::string &filename = "image") override;
+  void Draw_Pixel(int x, int y, Color clr) override;
+  void Save() override;
 };

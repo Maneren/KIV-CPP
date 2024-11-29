@@ -1,17 +1,11 @@
-#include <fstream>
-#include <iostream>
-#include <vector>
-
-#include "drawing.h"
-
-#include <filesystem>
-
 #include "analyzer.h"
 #include "generator.h"
 #include "shared.h"
-
 #include <chrono>
+#include <filesystem>
+#include <iostream>
 #include <memory>
+
 
 int main(int argc, char **argv) {
   bool dummy = false;

@@ -1,6 +1,6 @@
 #include "drawing.h"
-
 #include <algorithm>
+#include <fstream>
 
 void PPMDrawing::Init(int width, int height, const std::string &filename) {
   mFilename = filename;

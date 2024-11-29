@@ -1,0 +1,273 @@
+diff --minimal cv11a/analyzer.cpp cv11/analyzer.cpp
+4a5
+> #include <algorithm>
+5a7,10
+> #include <ranges>
+> 
+> namespace views = std::views;
+> namespace ranges = std::ranges;
+16,19c21,25
+<   mData = new double[mFile_Size / sizeof(double)];
+<   size_t i = 0;
+<   while (ifs)
+<     ifs.read((char *)&mData[i++], sizeof(double));
+---
+>   mData = std::vector<double>(mFile_Size / sizeof(double));
+> 
+>   if (!ifs.read(reinterpret_cast<char *>(mData.data()), mFile_Size)) {
+>     throw std::runtime_error("Error reading file");
+>   }
+25,27c31,33
+<   for (size_t i = 0; i < mFile_Size / sizeof(double) - 1; i += 2) {
+<     double d1 = mData[i];
+<     double d2 = mData[i + 1];
+---
+>   for (auto const pair : mData | views::as_const | views::chunk(2)) {
+>     auto x = static_cast<size_t>((pair[0] - NumStart) / IntervalSizeX);
+>     auto y = static_cast<size_t>((pair[1] - NumStart) / IntervalSizeY);
+29,30c35,36
+<     size_t x = static_cast<size_t>((d1 - NumStart) / IntervalSizeX);
+<     size_t y = static_cast<size_t>((d2 - NumStart) / IntervalSizeY);
+---
+>     if (x >= ImgWidth || y >= ImgHeight)
+>       continue;
+32,37c38
+<     try {
+<       Histogram.at(x).at(y)++;
+<     } catch (...) {
+<       if (x < ImgWidth && y < ImgHeight) {
+<         while (x >= Histogram.size())
+<           Histogram.push_back(std::vector<size_t>());
+---
+>     auto index = x + y * ImgWidth;
+39,43c40,41
+<         while (y >= Histogram[x].size())
+<           Histogram[x].push_back(0);
+<       }
+<     }
+<   }
+---
+>     if (index >= Histogram.size())
+>       Histogram.resize(index + 1);
+45,50c43
+<   mMaximum = 0;
+<   for (size_t i = 0; i < Histogram.size(); i++) {
+<     for (size_t j = 0; j < Histogram[i].size(); j++) {
+<       if (Histogram[i][j] > mMaximum)
+<         mMaximum = Histogram[i][j];
+<     }
+---
+>     Histogram[index]++;
+52a46,47
+>   mMaximum = ranges::max(Histogram);
+> 
+59,62d53
+<   for (size_t i = 0; i < Histogram.size(); i++) {
+<     for (size_t j = 0; j < Histogram[i].size(); j++) {
+<       double factor = 1.0 - (static_cast<double>(Histogram[i][j]) /
+<                              static_cast<double>(mMaximum));
+64c55,59
+<       uint8_t grayscale = static_cast<uint8_t>(255.0 * factor);
+---
+>   for (auto const [index, value] : Histogram | views::as_const |
+>                                        views::chunk(ImgWidth) | views::join |
+>                                        views::enumerate) {
+>     double factor =
+>         1.0 - (static_cast<double>(value) / static_cast<double>(mMaximum));
+66c61
+<       IDrawing::Color c{grayscale, grayscale, grayscale};
+---
+>     auto grayscale = static_cast<uint8_t>(255.0 * factor);
+68,69c63,67
+<       draw.Draw_Pixel(static_cast<int>(i), static_cast<int>(j), c);
+<     }
+---
+>     IDrawing::Color c{grayscale, grayscale, grayscale};
+> 
+>     auto x = static_cast<int>(index % ImgWidth);
+>     auto y = static_cast<int>(index / ImgWidth);
+>     draw.Draw_Pixel(x, y, c);
+70a69
+> 
+diff --minimal cv11a/analyzer.h cv11/analyzer.h
+8c8
+<   ~IAnalyzer() = default;
+---
+>   virtual ~IAnalyzer() = default;
+22c22
+<   virtual ~DummyAnalyzer() = default;
+---
+>   ~DummyAnalyzer() override = default;
+24c24
+<   virtual bool Load() override { return true; }
+---
+>   bool Load() override { return true; }
+26c26
+<   virtual bool Analyze() override { return true; }
+---
+>   bool Analyze() override { return true; }
+28c28
+<   virtual bool Save_Image(const std::string &out) override { return true; }
+---
+>   bool Save_Image(const std::string &) override { return true; }
+30c30
+<   virtual size_t Get_File_Size() const override { return 0; }
+---
+>   size_t Get_File_Size() const override { return 0; }
+35c35
+<   std::vector<std::vector<size_t>> Histogram;
+---
+>   std::vector<size_t> Histogram;
+37c37
+<   double *mData = nullptr;
+---
+>   std::vector<double> mData;
+45,48c45
+<   virtual ~Dist2DAnalyzer() {
+<     if (mData)
+<       delete[] mData;
+<   }
+---
+>   ~Dist2DAnalyzer() override = default;
+50c47
+<   virtual bool Load() override;
+---
+>   bool Load() override;
+52c49
+<   virtual bool Analyze() override;
+---
+>   bool Analyze() override;
+54c51
+<   virtual bool Save_Image(const std::string &out) override;
+---
+>   bool Save_Image(const std::string &out) override;
+56c53
+<   virtual size_t Get_File_Size() const override { return mFile_Size; }
+---
+>   size_t Get_File_Size() const override { return mFile_Size; }
+Only in cv11: cv11-ansi.diff
+Only in cv11: cv11.diff
+Only in cv11: distribution.ppm
+diff --minimal cv11a/drawing.cpp cv11/drawing.cpp
+1,2c1
+< #include "Drawing.h"
+< 
+---
+> #include "drawing.h"
+4,7c3
+< #include <map>
+< 
+< #undef min
+< #undef max
+---
+> #include <fstream>
+12,16c8,11
+<   mBitmap.resize(height);
+<   for (auto &vec : mBitmap) {
+<     vec.resize(width);
+<     std::fill(vec.begin(), vec.end(), Color{255, 255, 255});
+<   }
+---
+>   mBitmap.resize(width * height);
+>   std::ranges::fill(mBitmap, Color{255, 255, 255});
+>   mWidth = width;
+>   mHeight = height;
+23c18
+<   ofs << mBitmap[0].size() << " " << mBitmap.size() << std::endl;
+---
+>   ofs << mWidth << " " << mHeight << std::endl;
+26,32c21,22
+<   for (auto &vecY : mBitmap) {
+<     for (auto &col : vecY) {
+<       ofs.write((char *)&col.r, 1);
+<       ofs.write((char *)&col.g, 1);
+<       ofs.write((char *)&col.b, 1);
+<     }
+<   }
+---
+>   ofs.write(reinterpret_cast<const char *>(mBitmap.data()),
+>             mBitmap.size() * sizeof(Color));
+36c26
+<   if (y < 0 || y >= static_cast<int>(mBitmap.size()))
+---
+>   if (y < 0 || y >= mWidth)
+39c29
+<   if (x < 0 || x >= static_cast<int>(mBitmap[y].size()))
+---
+>   if (x < 0 || x >= mHeight)
+42c32
+<   mBitmap[y][x] = clr;
+---
+>   mBitmap[y * mWidth + x] = clr;
+diff --minimal cv11a/drawing.h cv11/drawing.h
+3,4c3
+< #include <fstream>
+< #include <sstream>
+---
+> #include <cstdint>
+13c12,13
+<     Color(const Color &c) : r(c.r), g(c.g), b(c.b) {};
+---
+>     Color(const Color &c) = default;
+>     Color &operator=(const Color &c) = default;
+17a18,19
+>   virtual ~IDrawing() = default;
+> 
+26c28
+<   std::vector<std::vector<Color>> mBitmap;
+---
+>   std::vector<Color> mBitmap;
+27a30
+>   int mWidth, mHeight;
+30,33c33,36
+<   virtual void Init(int width, int height,
+<                     const std::string &filename = "image") override;
+<   virtual void Draw_Pixel(int x, int y, Color clr) override;
+<   virtual void Save() override;
+---
+>   void Init(int width, int height,
+>             const std::string &filename = "image") override;
+>   void Draw_Pixel(int x, int y, Color clr) override;
+>   void Save() override;
+diff --minimal cv11a/generator.cpp cv11/generator.cpp
+8c8
+< void Generator::Generate() {
+---
+> void Generator::Generate() const {
+13c13
+<   std::normal_distribution<double> rdist(mMean, mSigma);
+---
+>   std::normal_distribution rdist(mMean, mSigma);
+diff --minimal cv11a/generator.h cv11/generator.h
+2a3,5
+> #include <cstddef>
+> #include <cstdlib>
+> 
+25c28
+<   void Generate();
+---
+>   void Generate() const;
+Only in cv11: input.bin
+diff --minimal cv11a/main.cpp cv11/main.cpp
+1,8d0
+< #include <fstream>
+< #include <iostream>
+< #include <vector>
+< 
+< #include "drawing.h"
+< 
+< #include <filesystem>
+< 
+12d3
+< 
+13a5,6
+> #include <filesystem>
+> #include <iostream>
+14a8
+> 
+Only in cv11: notes.md
+diff --minimal cv11a/shared.h cv11/shared.h
+2a3,4
+> #include <cstdlib>
+> 
+Only in cv11: .vscode

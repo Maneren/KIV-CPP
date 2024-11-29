@@ -19,15 +19,15 @@ public:
 class DummyAnalyzer : public IAnalyzer {
 public:
   DummyAnalyzer() = default;
-  virtual ~DummyAnalyzer() = default;
+  ~DummyAnalyzer() override = default;
 
-  virtual bool Load() override { return true; }
+  bool Load() override { return true; }
 
-  virtual bool Analyze() override { return true; }
+  bool Analyze() override { return true; }
 
-  virtual bool Save_Image(const std::string &) override { return true; }
+  bool Save_Image(const std::string &) override { return true; }
 
-  virtual size_t Get_File_Size() const override { return 0; }
+  size_t Get_File_Size() const override { return 0; }
 };
 
 class Dist2DAnalyzer : public IAnalyzer {
@@ -42,13 +42,13 @@ private:
 
 public:
   Dist2DAnalyzer() = default;
-  virtual ~Dist2DAnalyzer() = default;
+  ~Dist2DAnalyzer() override = default;
 
-  virtual bool Load() override;
+  bool Load() override;
 
-  virtual bool Analyze() override;
+  bool Analyze() override;
 
-  virtual bool Save_Image(const std::string &out) override;
+  bool Save_Image(const std::string &out) override;
 
-  virtual size_t Get_File_Size() const override { return mFile_Size; }
+  size_t Get_File_Size() const override { return mFile_Size; }
 };
