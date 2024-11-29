@@ -7,7 +7,7 @@ default:
 
 build folder:
   mkdir -p {{builddir}}
-  clang++ -Wall -std=c++23 -Wall -Wextra "{{justfile_directory() / folder}}"/*.cpp -o "{{builddir}}/main_{{folder}}"
+  clang++ -Wall -std=c++23 -Wall -Wextra -O1  "{{justfile_directory() / folder}}"/*.cpp -o "{{builddir}}/main_{{folder}}"
 
 [no-cd]
 run folder args="": (build folder)
