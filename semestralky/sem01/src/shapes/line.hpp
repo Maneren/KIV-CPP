@@ -3,16 +3,16 @@
 #include "shape.hpp"
 #include <format>
 
-class Line : public IShape {
+class Line final : public IShape {
 public:
   Line(Point start, Point end) : start(start), end(end) {}
-  void transform(const IOperation &op) override;
-  std::string display() const override {
+  void transform(const IOperation &op) override final;
+  std::string display() const override final {
     return std::format("line {} -> {}", start.display(), end.display());
   };
-  void draw_svg(std::ostream &out) const override;
-  void draw_raster(std::vector<std::vector<bool>> &matrix) const override;
-  ~Line() override = default;
+  void draw_svg(std::ostream &out) const override final;
+  void draw_raster(std::vector<std::vector<bool>> &matrix) const override final;
+  ~Line() override final = default;
 
 private:
   /// Start point of the line
