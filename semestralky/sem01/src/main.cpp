@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
 
     std::cerr << "Unknown or malformed instruction: '" << line << "'"
               << std::endl;
-    
+
     return 1;
   }
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 
   writer->get()->write(scene);
 
-  std::cout << "OK\n" << commands << std::endl;
+  std::cout << "OK" << std::endl << commands << std::endl;
 
   return 0;
 }
