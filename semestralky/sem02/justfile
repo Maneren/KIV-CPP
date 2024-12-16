@@ -1,0 +1,19 @@
+[private]
+default:
+    @just --list
+
+configure:
+  cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
+
+build:
+  cmake --build build
+
+sample: build
+  time ./build/mpcalc
+
+valgrind_complex: build
+  valgrind --leak-check=fsize_t ./build/mpcalc
+  # valgrind --leak-check=fsize_t ./build/drawing inputs/complex.in inputs/complex.pgm 160x160
+
+clean:
+  rm -rf build
