@@ -1,6 +1,6 @@
-# KIV-CPP-sem01
+# KIV/CPP - Semester project #1
 
-Semester project #1 for KIV/CPP.
+Drawing shapes from text commands.
 
 ## Compilation
 

@@ -1,6 +1,6 @@
-# KIV-CPP-sem01
+# KIV/CPP - Semester project #2
 
-Semester project #1 for KIV/CPP.
+Library for a multi-precision arithmetic and a simple calculator frontend.
 
 ## Compilation
 
@@ -9,4 +9,4 @@ cmake -S . -B build
 cmake --build build
 ```
 
-The executable will be in `build/drawing`.
+The executable will be in `build/mpcalc`.
