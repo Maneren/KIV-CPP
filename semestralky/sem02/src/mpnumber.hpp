@@ -27,21 +27,24 @@ public:
 private:
   const __MPInt value;
 };
+constexpr size_t Unlimited = -1uz;
+
 } // namespace MP
 
-constexpr size_t __Unlimited = -1uz;
 static constexpr size_t maxp(size_t a, size_t b) {
-  return (a == __Unlimited || b == __Unlimited) ? __Unlimited : std::max(a, b);
+  return (a == MP::Unlimited || b == MP::Unlimited) ? MP::Unlimited
+                                                    : std::max(a, b);
 }
 
-template <const size_t precision = 0uz> class MPInt : public MP::__MPInt {
+template <const size_t _precision = MP::Unlimited>
+class MPInt : public MP::__MPInt {
   template <const size_t other_precision> friend class MPInt;
 
 public:
-  static const size_t Unlimited = __Unlimited;
+  static const size_t Unlimited = MP::Unlimited;
 
   // Default constructor
-  MPInt() : data(precision, 0) {}
+  MPInt() : data(0, 0) {}
 
   // Construct from unsigned long long
   MPInt(size_t value) : data{} {
@@ -63,8 +66,8 @@ public:
   // Copy assignment operator
   MPInt &operator=(const MPInt &other) {
     data = other.data;
-    if (data.size() > precision) {
-      data.resize(precision);
+    if (data.size() > _precision) {
+      data.resize(_precision);
     }
     return *this;
   }
@@ -79,7 +82,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> operator+(const MPInt<other_precision> &other) const {
     MPInt<max_precision> result{data};
     result += other;
@@ -87,7 +90,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> &operator+=(const MPInt<other_precision> &other) {
     MP::double_digit carry = 0;
 
@@ -112,7 +115,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> operator-(const MPInt<other_precision> &other) const {
     MPInt<max_precision> result = *this;
     result -= other;
@@ -120,8 +123,8 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
-  MPInt<precision> &operator-=(const MPInt<other_precision> &other) {
+            const size_t max_precision = maxp(_precision, other_precision)>
+  MPInt<_precision> &operator-=(const MPInt<other_precision> &other) {
     if (data.size() < other.data.size()) {
       data.resize(other.data.size());
     }
@@ -148,7 +151,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> operator*(const MPInt<other_precision> &other) const {
     MPInt<max_precision> result = *this;
     result *= other;
@@ -156,8 +159,8 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
-  MPInt<precision> &operator*=(const MPInt<other_precision> &other) {
+            const size_t max_precision = maxp(_precision, other_precision)>
+  MPInt<_precision> &operator*=(const MPInt<other_precision> &other) {
     if (is_zero() || other.is_zero()) {
       this->data = {0};
     }
@@ -196,7 +199,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   std::tuple<MPInt<max_precision> &, MPInt<max_precision>>
   euclid_div(const MPInt<other_precision> &other) {
     if (other.is_zero()) {
@@ -225,13 +228,13 @@ public:
 
   template <const size_t other_precision>
   MPInt operator/(const MPInt<other_precision> &other) const {
-    MPInt<std::max(precision, other_precision)> temp = *this;
+    MPInt<std::max(_precision, other_precision)> temp = *this;
     temp /= other;
     return temp;
   }
 
   template <const size_t other_precision>
-  MPInt<precision> &operator/=(const MPInt<other_precision> &other) {
+  MPInt<_precision> &operator/=(const MPInt<other_precision> &other) {
     if (other.is_zero()) {
       throw std::runtime_error("Divide by zero");
     }
@@ -242,7 +245,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> operator%(const MPInt<other_precision> &other) const {
     MPInt<max_precision> temp = *this;
     temp %= other;
@@ -250,7 +253,7 @@ public:
   }
 
   template <const size_t other_precision>
-  MPInt<precision> &operator%=(const MPInt<other_precision> &other) {
+  MPInt<_precision> &operator%=(const MPInt<other_precision> &other) {
     if (other.is_zero()) {
       throw std::runtime_error("Divide by zero");
     }
@@ -263,7 +266,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   MPInt<max_precision> operator<<(const MPInt<other_precision> &other) const {
     MPInt<max_precision> result = *this;
     result <<= other;
@@ -271,8 +274,8 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
-  MPInt<precision> &operator<<=(const MPInt<other_precision> &other) {
+            const size_t max_precision = maxp(_precision, other_precision)>
+  MPInt<_precision> &operator<<=(const MPInt<other_precision> &other) {
     MPInt<max_precision> result = *this;
     MPInt<max_precision> temp = other;
     MPInt<max_precision> one{1};
@@ -283,14 +286,14 @@ public:
     }
 
     if (data.size() > max_precision) {
-      data.resize(precision);
+      data.resize(_precision);
     }
 
     return *this;
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   bool operator>(const MPInt<other_precision> &other) const {
     for (auto i :
          std::views::iota(0uz, std::max(data.size(), other.data.size())) |
@@ -311,7 +314,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   bool operator<(const MPInt<other_precision> &other) const {
     for (auto i :
          std::views::iota(0uz, std::max(data.size(), other.data.size())) |
@@ -332,7 +335,7 @@ public:
   }
 
   template <const size_t other_precision,
-            const size_t max_precision = maxp(precision, other_precision)>
+            const size_t max_precision = maxp(_precision, other_precision)>
   bool operator==(const MPInt<other_precision> &other) const {
     for (auto i :
          std::views::iota(0uz, std::max(data.size(), other.data.size())) |
@@ -366,10 +369,10 @@ public:
 
   void zero() { std::ranges::fill(data, 0); }
 
-  MPInt<precision> factorial() {
-    MPInt<precision> temp{data};
-    MPInt<precision> result{1};
-    MPInt<precision> one{1};
+  MPInt<_precision> factorial() {
+    MPInt<_precision> temp{data};
+    MPInt<_precision> result{1};
+    MPInt<_precision> one{1};
 
     while (!temp.is_zero()) {
       result *= temp;
@@ -379,8 +382,10 @@ public:
     return result;
   }
 
+  constexpr size_t precision() const { return _precision; }
+
   friend std::ostream &operator<<(std::ostream &out,
-                                  const MPInt<precision> &mpint) {
+                                  const MPInt<_precision> &mpint) {
     if (mpint.is_zero()) {
       out << "0";
       return out;
@@ -388,8 +393,8 @@ public:
 
     std::vector<unsigned char> digits;
 
-    MPInt<precision> temp = mpint;
-    MPInt<precision> decimal_factor{10000};
+    MPInt<_precision> temp = mpint;
+    MPInt<_precision> decimal_factor{10000};
 
     bool written = false;
 
@@ -427,8 +432,8 @@ private:
   std::vector<MP::digit> data;
 
   MPInt(const std::vector<MP::digit> &data) : data(data) {
-    if (data.size() > precision) {
-      this->data.resize(precision);
+    if (data.size() > _precision) {
+      this->data.resize(_precision);
     }
   }
 

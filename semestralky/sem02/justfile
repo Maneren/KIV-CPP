@@ -8,8 +8,14 @@ configure:
 build:
   cmake --build build
 
+unlimited: build
+  ./build/mpcalc 1
+
+limited: build
+  ./build/mpcalc 2
+
 sample: build
-  time ./build/mpcalc
+  time ./build/mpcalc 3
 
 valgrind_complex: build
   valgrind --leak-check=fsize_t ./build/mpcalc
